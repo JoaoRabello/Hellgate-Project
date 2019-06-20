@@ -46,8 +46,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 3b3ade87f34ee254b84766d07d55194d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  speed: 250
+  hitsToDie: 2
+  speed: 150
   damage: 20
+  knockbackForce: 150
   mask:
     serializedVersion: 2
     m_Bits: 256

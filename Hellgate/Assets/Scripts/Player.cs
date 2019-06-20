@@ -6,8 +6,9 @@ public class Player : MonoBehaviour
     private Rigidbody2D rg;
     private Animator an;
     private SpriteRenderer sp;
+    public Transform attackAreaR;
+    public Transform attackAreaL;
     public Slider slider;
-    public Camera cam;
     public LayerMask jumpMask;
 
     [Range(1,1000)]
@@ -16,7 +17,7 @@ public class Player : MonoBehaviour
     [Range(1,1000)]
     public float moveSpeed;
     float horizontalInput;
-    Vector2 lastPosition;
+    bool lookingRight = true;
 
     //Pulo
     private bool grounded;
@@ -38,14 +39,12 @@ public class Player : MonoBehaviour
         an = GetComponent<Animator>();
         sp = GetComponent<SpriteRenderer>();
 
-        lastPosition = transform.position;
         bodySize = GetComponent<CapsuleCollider2D>().size;
         boxSize = new Vector2(bodySize.x, groundedSkin);
     }
 
     void Update()
     {
-        cam.gameObject.transform.position = new Vector3(transform.position.x,transform.position.y, cam.gameObject.transform.position.z);
         horizontalInput = Input.GetAxis("Horizontal");
         if(horizontalInput != 0)
         {
@@ -58,7 +57,6 @@ public class Player : MonoBehaviour
         }
         Jump();
 
-        lastPosition = transform.position;
         if (Input.GetKeyDown(KeyCode.Mouse0))
         {
             Attack();
@@ -76,10 +74,12 @@ public class Player : MonoBehaviour
         if (horizontalInput < 0)
         {
             sp.flipX = true;
+            lookingRight = false;
         }
         else
         {
             sp.flipX = false;
+            lookingRight = true;
         }
     }
 
@@ -135,6 +135,26 @@ public class Player : MonoBehaviour
     void EndAttack()
     {
         an.SetBool("attacking", false);
+    }
+
+    void SpawnAttack()
+    {
+        if (lookingRight)
+        {
+            attackAreaL.gameObject.SetActive(false);
+            attackAreaR.gameObject.SetActive(true);
+        }
+        else
+        {
+            attackAreaR.gameObject.SetActive(false);
+            attackAreaL.gameObject.SetActive(true);
+        }
+    }
+
+    void DespawnAttack()
+    {
+        attackAreaR.gameObject.SetActive(false);
+        attackAreaL.gameObject.SetActive(false);
     }
 
     void TakeDamage(float dmg)

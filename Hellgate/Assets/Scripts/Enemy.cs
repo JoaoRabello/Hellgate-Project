@@ -7,14 +7,20 @@ public class Enemy : MonoBehaviour
     GameObject player;
     Rigidbody2D rg;
 
+    [Range(1, 10)]
+    public int hitsToDie;
     [Range(1,1000)]
     public float speed;
     [Range(1, 1000)]
     public float damage;
+    [Range(1,10000)]
+    public float knockbackForce;
     private bool canMove = true;
     private bool canMoveL = true;
     private bool canMoveR = true;
     public LayerMask mask;
+
+    float playerDir;
 
     void Start()
     {
@@ -49,22 +55,51 @@ public class Enemy : MonoBehaviour
 
         if (canMove)
         {
-            float dir = Mathf.Clamp(player.transform.position.x - transform.position.x, -1f, 1f);
-            if(dir > 0 && canMoveR)
+            playerDir = Mathf.Clamp(player.transform.position.x - transform.position.x, -1f, 1f);
+            if(playerDir > 0 && canMoveR)
             {
-                rg.velocity = new Vector2(dir * Time.deltaTime * speed, rg.velocity.y);
+                rg.velocity = new Vector2(playerDir * Time.deltaTime * speed, rg.velocity.y);
             }
             else
             {
-                if (dir < 0 && canMoveL)
+                if (playerDir < 0 && canMoveL)
                 {
-                    rg.velocity = new Vector2(dir * Time.deltaTime * speed, rg.velocity.y);
+                    rg.velocity = new Vector2(playerDir * Time.deltaTime * speed, rg.velocity.y);
                 }
                 else
                 {
                     rg.velocity = Vector2.zero;
                 }
             }
+        }
+    }
+
+    public void TakeDamage()
+    {
+        if(hitsToDie <= 1)
+        {
+            Destroy(gameObject);
+        }
+        else
+        {
+            hitsToDie--;
+            rg.AddForce(new Vector2(transform.position.x - player.transform.position.x, 0f) * knockbackForce, ForceMode2D.Force);
+            StartCoroutine(Daze(0.5f));
+        }
+    }
+
+    IEnumerator Daze(float time)
+    {
+        canMove = false;
+        yield return new WaitForSeconds(time);
+        canMove = true;
+    }
+
+    private void OnTriggerEnter2D(Collider2D c)
+    {
+        if (c.gameObject.CompareTag("DamageArea"))
+        {
+            TakeDamage();
         }
     }
 
