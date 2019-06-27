@@ -18,6 +18,8 @@ public class Enemy : MonoBehaviour
     private bool canMove = true;
     private bool canMoveL = true;
     private bool canMoveR = true;
+    private string moveDir = "Left";
+
     public LayerMask mask;
 
     float playerDir;
@@ -29,6 +31,67 @@ public class Enemy : MonoBehaviour
     }
 
     void Update()
+    {
+        GroundCheck();
+        if (canMove)
+        {
+            if( (transform.position.x - player.transform.position.x < 4 && transform.position.x - player.transform.position.x > -4) && 
+                (transform.position.y - player.transform.position.y < 0.5f && transform.position.y - player.transform.position.y > -0.5f))
+            {
+                ChasePlayer();
+            }
+            else
+            {
+                MoveTo(moveDir);
+                if (canMoveL && !canMoveR)
+                {
+                    moveDir = "Left";
+                }
+                else
+                {
+                    if (canMoveR && !canMoveL)
+                    {
+                        moveDir = "Right";
+                    }
+                }
+            }
+        }
+    }
+
+    void ChasePlayer()
+    {
+        playerDir = Mathf.Clamp(player.transform.position.x - transform.position.x, -1f, 1f);
+        if (playerDir > 0 && canMoveR)
+        {
+            rg.velocity = new Vector2(playerDir * Time.deltaTime * speed, rg.velocity.y);
+        }
+        else
+        {
+            if (playerDir < 0 && canMoveL)
+            {
+                rg.velocity = new Vector2(playerDir * Time.deltaTime * speed, rg.velocity.y);
+            }
+            else
+            {
+                rg.velocity = Vector2.zero;
+            }
+        }
+    }
+    
+    void MoveTo(string dir)
+    {
+        switch (dir) {
+            case "Left":
+                rg.velocity = new Vector2(-1 * speed * Time.deltaTime, rg.velocity.y);
+                break;
+            case "Right":
+                rg.velocity = new Vector2(1 * speed * Time.deltaTime, rg.velocity.y);
+                break;
+        }
+    }
+
+
+    void GroundCheck()
     {
         bool rayRight = Physics2D.Raycast((Vector2)transform.position + Vector2.right * 0.75f, Vector2.down, 2.5f, mask);
         bool rayLeft = Physics2D.Raycast((Vector2)transform.position + Vector2.left * 0.75f, Vector2.down, 2.5f, mask);
@@ -49,26 +112,6 @@ public class Enemy : MonoBehaviour
                 if (!rayLeft)
                 {
                     canMoveL = false;
-                }
-            }
-        }
-
-        if (canMove)
-        {
-            playerDir = Mathf.Clamp(player.transform.position.x - transform.position.x, -1f, 1f);
-            if(playerDir > 0 && canMoveR)
-            {
-                rg.velocity = new Vector2(playerDir * Time.deltaTime * speed, rg.velocity.y);
-            }
-            else
-            {
-                if (playerDir < 0 && canMoveL)
-                {
-                    rg.velocity = new Vector2(playerDir * Time.deltaTime * speed, rg.velocity.y);
-                }
-                else
-                {
-                    rg.velocity = Vector2.zero;
                 }
             }
         }
