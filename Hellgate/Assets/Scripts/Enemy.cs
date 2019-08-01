@@ -7,8 +7,8 @@ public class Enemy : MonoBehaviour
     GameObject player;
     Rigidbody2D rg;
 
-    [Range(1, 10)]
-    public int hitsToDie;
+    [Range(1,10)]
+    public float HP = 100;
     [Range(1,1000)]
     public float speed;
     [Range(1, 1000)]
@@ -20,7 +20,7 @@ public class Enemy : MonoBehaviour
     private bool canMoveR = true;
     private string moveDir = "Left";
 
-    public LayerMask mask;
+    public LayerMask raycastMask;
 
     float playerDir;
 
@@ -93,8 +93,8 @@ public class Enemy : MonoBehaviour
 
     void GroundCheck()
     {
-        bool rayRight = Physics2D.Raycast((Vector2)transform.position + Vector2.right * 0.75f, Vector2.down, 2.5f, mask);
-        bool rayLeft = Physics2D.Raycast((Vector2)transform.position + Vector2.left * 0.75f, Vector2.down, 2.5f, mask);
+        bool rayRight = Physics2D.Raycast((Vector2)transform.position + Vector2.right * 0.75f, Vector2.down, 2.5f, raycastMask);
+        bool rayLeft = Physics2D.Raycast((Vector2)transform.position + Vector2.left * 0.75f, Vector2.down, 2.5f, raycastMask);
 
         if (rayRight && rayLeft)
         {
@@ -117,15 +117,15 @@ public class Enemy : MonoBehaviour
         }
     }
 
-    public void TakeDamage()
+    public void TakeDamage(float dmg)
     {
-        if(hitsToDie <= 1)
+        if(HP <= dmg)
         {
             Destroy(gameObject);
         }
         else
         {
-            hitsToDie--;
+            HP -= dmg;
             rg.AddForce(new Vector2(transform.position.x - player.transform.position.x, 0f) * knockbackForce, ForceMode2D.Force);
             StartCoroutine(Daze(0.5f));
         }
@@ -142,7 +142,7 @@ public class Enemy : MonoBehaviour
     {
         if (c.gameObject.CompareTag("DamageArea"))
         {
-            TakeDamage();
+            TakeDamage(Player.bloodlustDamage);
         }
     }
 

@@ -6,13 +6,23 @@ public class Player : MonoBehaviour
     private Rigidbody2D rg;
     private Animator an;
     private SpriteRenderer sp;
-    public Transform attackAreaR;
-    public Transform attackAreaL;
+    
     public Slider slider;
     public LayerMask jumpMask;
 
     [Range(1,1000)]
-    public float life;
+    public float totalHP = 100;
+    private float actualHP;
+    public Transform attackAreaR;
+    public Transform attackAreaL;
+    private float counter = 0f;
+    private float timeToAttack = 0.75f;
+    private bool canAttack = true;
+
+    private float strength = 100f;
+    private float weaponStrength = 10f;
+    private float atk = 10f;
+    public static float bloodlustDamage;
 
     [Range(1,1000)]
     public float moveSpeed;
@@ -41,6 +51,8 @@ public class Player : MonoBehaviour
 
         bodySize = GetComponent<CapsuleCollider2D>().size;
         boxSize = new Vector2(bodySize.x, groundedSkin);
+
+        actualHP = totalHP;
     }
 
     void Update()
@@ -57,11 +69,23 @@ public class Player : MonoBehaviour
         }
         Jump();
 
-        if (Input.GetKeyDown(KeyCode.Mouse0))
+        if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
         {
             Attack();
+            canAttack = false;
+            counter = 0;
         }
-        slider.value = life;
+
+        if (counter >= timeToAttack)
+        {
+            canAttack = true;
+        }
+        else
+        {
+            counter += Time.deltaTime;
+        }
+
+        slider.value = actualHP;
     }
 
     void Walk()
@@ -129,6 +153,9 @@ public class Player : MonoBehaviour
 
     void Attack()
     {
+        float damage = (strength + weaponStrength + atk + Random.Range(20f, 40f)) / 2;
+        bloodlustDamage = damage * (((((actualHP / totalHP) * 100) - 100) * (-1) / (200)) + 1);
+        print(bloodlustDamage);
         an.SetBool("attacking", true);
     }
 
@@ -159,7 +186,7 @@ public class Player : MonoBehaviour
 
     void TakeDamage(float dmg)
     {
-        life -= dmg;
+        actualHP -= dmg;
     }
 
     private void OnCollisionEnter2D(Collision2D c)

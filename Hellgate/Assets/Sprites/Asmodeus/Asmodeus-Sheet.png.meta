@@ -1,0 +1,535 @@
+fileFormatVersion: 2
+guid: 70440967c001736499f7cfd4b3bcea9d
+TextureImporter:
+  internalIDToNameTable:
+  - first:
+      213: 2632797689371447513
+    second: Asmodeus-Sheet_0
+  - first:
+      213: -7657013710995702118
+    second: Asmodeus-Sheet_1
+  - first:
+      213: 8809009183155003379
+    second: Asmodeus-Sheet_2
+  - first:
+      213: -5010904408745665972
+    second: Asmodeus-Sheet_3
+  - first:
+      213: 5618895433202821147
+    second: Asmodeus-Sheet_4
+  - first:
+      213: -3429521256938784402
+    second: Asmodeus-Sheet_5
+  - first:
+      213: 2779137542567034385
+    second: Asmodeus-Sheet_6
+  - first:
+      213: 2210985849403422980
+    second: Asmodeus-Sheet_7
+  - first:
+      213: 2294580955243161489
+    second: Asmodeus-Sheet_8
+  - first:
+      213: -5072657343129163096
+    second: Asmodeus-Sheet_9
+  - first:
+      213: -8896554118296254509
+    second: Asmodeus-Sheet_10
+  - first:
+      213: -3522880115886309550
+    second: Asmodeus-Sheet_11
+  - first:
+      213: -6182222326441787084
+    second: Asmodeus-Sheet_12
+  - first:
+      213: 5848521739707351175
+    second: Asmodeus-Sheet_13
+  - first:
+      213: 525132883095456719
+    second: Asmodeus-Sheet_14
+  - first:
+      213: 5012626683184677009
+    second: Asmodeus-Sheet_15
+  - first:
+      213: -1234547202024776960
+    second: Asmodeus-Sheet_16
+  - first:
+      213: 2463950987336117818
+    second: Asmodeus-Sheet_17
+  externalObjects: {}
+  serializedVersion: 10
+  mipmaps:
+    mipMapMode: 0
+    enableMipMap: 0
+    sRGBTexture: 1
+    linearTexture: 0
+    fadeOut: 0
+    borderMipMap: 0
+    mipMapsPreserveCoverage: 0
+    alphaTestReferenceValue: 0.5
+    mipMapFadeDistanceStart: 1
+    mipMapFadeDistanceEnd: 3
+  bumpmap:
+    convertToNormalMap: 0
+    externalNormalMap: 0
+    heightScale: 0.25
+    normalMapFilter: 0
+  isReadable: 0
+  streamingMipmaps: 0
+  streamingMipmapsPriority: 0
+  grayScaleToAlpha: 0
+  generateCubemap: 6
+  cubemapConvolution: 0
+  seamlessCubemap: 0
+  textureFormat: 1
+  maxTextureSize: 2048
+  textureSettings:
+    serializedVersion: 2
+    filterMode: 0
+    aniso: -1
+    mipBias: -100
+    wrapU: 1
+    wrapV: 1
+    wrapW: 1
+  nPOTScale: 0
+  lightmap: 0
+  compressionQuality: 50
+  spriteMode: 2
+  spriteExtrude: 1
+  spriteMeshType: 1
+  alignment: 0
+  spritePivot: {x: 0.5, y: 0.5}
+  spritePixelsToUnits: 32
+  spriteBorder: {x: 0, y: 0, z: 0, w: 0}
+  spriteGenerateFallbackPhysicsShape: 1
+  alphaUsage: 1
+  alphaIsTransparency: 1
+  spriteTessellationDetail: -1
+  textureType: 8
+  textureShape: 1
+  singleChannelComponent: 0
+  maxTextureSizeSet: 0
+  compressionQualitySet: 0
+  textureFormatSet: 0
+  platformSettings:
+  - serializedVersion: 3
+    buildTarget: DefaultTexturePlatform
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  - serializedVersion: 3
+    buildTarget: Standalone
+    maxTextureSize: 2048
+    resizeAlgorithm: 0
+    textureFormat: -1
+    textureCompression: 0
+    compressionQuality: 50
+    crunchedCompression: 0
+    allowsAlphaSplitting: 0
+    overridden: 0
+    androidETC2FallbackOverride: 0
+    forceMaximumCompressionQuality_BC6H_BC7: 0
+  spriteSheet:
+    serializedVersion: 2
+    sprites:
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_0
+      rect:
+        serializedVersion: 2
+        x: 20
+        y: 164
+        width: 28
+        height: 67
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 8530d394058f2a049a80400cd46edda1
+      internalID: 2632797689371447513
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_1
+      rect:
+        serializedVersion: 2
+        x: 100
+        y: 164
+        width: 28
+        height: 67
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 5a5d4decb6302cf439e29caa470c552e
+      internalID: -7657013710995702118
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_2
+      rect:
+        serializedVersion: 2
+        x: 180
+        y: 164
+        width: 28
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c84014586aff2f04ba24ece6743887d5
+      internalID: 8809009183155003379
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_3
+      rect:
+        serializedVersion: 2
+        x: 260
+        y: 164
+        width: 28
+        height: 68
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 10681ba9f98db7d44bbada223e3dd2db
+      internalID: -5010904408745665972
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_4
+      rect:
+        serializedVersion: 2
+        x: 17
+        y: 86
+        width: 28
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 215703af73ad4d64597da75b3a0d828a
+      internalID: 5618895433202821147
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_5
+      rect:
+        serializedVersion: 2
+        x: 97
+        y: 86
+        width: 28
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: dc28e46267a7051408a154383900ab65
+      internalID: -3429521256938784402
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_6
+      rect:
+        serializedVersion: 2
+        x: 177
+        y: 86
+        width: 30
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ce8d069f5b370c747b800d82392c4f3d
+      internalID: 2779137542567034385
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_7
+      rect:
+        serializedVersion: 2
+        x: 255
+        y: 86
+        width: 30
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d92841ef91dc95e41b92257d5378de5f
+      internalID: 2210985849403422980
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_8
+      rect:
+        serializedVersion: 2
+        x: 336
+        y: 86
+        width: 29
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 17b13fd66ceea374d97236cc9650080d
+      internalID: 2294580955243161489
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_9
+      rect:
+        serializedVersion: 2
+        x: 416
+        y: 86
+        width: 29
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: fb4bfc26e46e88f4597d17eb0b7b4f1c
+      internalID: -5072657343129163096
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_10
+      rect:
+        serializedVersion: 2
+        x: 497
+        y: 86
+        width: 28
+        height: 63
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: ddd838d4d23c50e4bab5a0e7309fc986
+      internalID: -8896554118296254509
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_11
+      rect:
+        serializedVersion: 2
+        x: 575
+        y: 86
+        width: 30
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 63c1707d424a2b2469742ede835ea74c
+      internalID: -3522880115886309550
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_12
+      rect:
+        serializedVersion: 2
+        x: 8
+        y: 4
+        width: 45
+        height: 65
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: a9300139b605c6b4ea8f7f7a968272f8
+      internalID: -6182222326441787084
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_13
+      rect:
+        serializedVersion: 2
+        x: 88
+        y: 4
+        width: 44
+        height: 62
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 09620c051178611408ede758fc7a76b4
+      internalID: 5848521739707351175
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_14
+      rect:
+        serializedVersion: 2
+        x: 168
+        y: 6
+        width: 44
+        height: 56
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: d69b79c1486a1564689ddc0d37987032
+      internalID: 525132883095456719
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_15
+      rect:
+        serializedVersion: 2
+        x: 248
+        y: 4
+        width: 44
+        height: 64
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: c205bd9ee9f4890438e3d170161e5df5
+      internalID: 5012626683184677009
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_16
+      rect:
+        serializedVersion: 2
+        x: 329
+        y: 4
+        width: 43
+        height: 61
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 9709e034cb5979e4c98b5d00ddfe949c
+      internalID: -1234547202024776960
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    - serializedVersion: 2
+      name: Asmodeus-Sheet_17
+      rect:
+        serializedVersion: 2
+        x: 409
+        y: 4
+        width: 43
+        height: 58
+      alignment: 0
+      pivot: {x: 0.5, y: 0.5}
+      border: {x: 0, y: 0, z: 0, w: 0}
+      outline: []
+      physicsShape: []
+      tessellationDetail: 0
+      bones: []
+      spriteID: 932b019558e158a4a9a4cd58e5d4ff13
+      internalID: 2463950987336117818
+      vertices: []
+      indices: 
+      edges: []
+      weights: []
+    outline: []
+    physicsShape: []
+    bones: []
+    spriteID: 5e97eb03825dee720800000000000000
+    internalID: 0
+    vertices: []
+    indices: 
+    edges: []
+    weights: []
+    secondaryTextures: []
+  spritePackingTag: 
+  pSDRemoveMatte: 0
+  pSDShowRemoveMatteOption: 0
+  userData: 
+  assetBundleName: 
+  assetBundleVariant: 
