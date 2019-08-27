@@ -3,6 +3,9 @@ using UnityEngine.UI;
 
 public class Player : MonoBehaviour
 {
+    private enum State { NORMAL, BASHING, DASHING };
+    private State state;
+
     private Rigidbody2D rg;
     private Animator an;
     private SpriteRenderer sp;
@@ -42,6 +45,10 @@ public class Player : MonoBehaviour
     [Range(1, 1000)]
     public float forcaPuloBaixo = 2f;
 
+    private bool _isBashArea = false;
+    private bool _canBash = true;
+    private bool _enemyGrab = false;
+    private GameObject _enemyBashed;
 
     void Awake()
     {
@@ -58,17 +65,93 @@ public class Player : MonoBehaviour
     void Update()
     {
         horizontalInput = Input.GetAxis("Horizontal");
-        if(horizontalInput != 0)
+
+        switch (state)
         {
-            Walk();
+            case State.NORMAL:
+                if (horizontalInput != 0)
+                {
+                    Walk();
+                }
+                else
+                {
+                    an.SetBool("walking", false);
+                    an.SetFloat("x", 0);
+                }
+
+                Jump();
+
+                AttackInputCheck();
+                BashInputCheck();
+
+                break;
+
+            case State.BASHING:
+                BashInputCheck();
+
+                if(horizontalInput > 0)
+                {
+                    _enemyBashed.transform.Rotate(0f, 0f, -1f);
+                }
+                else
+                {
+                    if(horizontalInput < 0)
+                    {
+                        _enemyBashed.transform.Rotate(0f, 0f, 1f);
+                    }
+                }
+
+                break;
+            default:
+                break;
+        }
+        
+        slider.value = actualHP;
+    }
+
+    void BashInputCheck()
+    {
+        if (Input.GetKeyDown(KeyCode.E) && _canBash && _isBashArea && !_enemyGrab)
+        {
+            print("Bash #1");
+            GrabEnemy(_enemyBashed);
         }
         else
         {
-            an.SetBool("walking", false);
-            an.SetFloat("x", 0);
+            if(Input.GetKeyDown(KeyCode.E) && _canBash && _isBashArea && _enemyGrab)
+            {
+                print("Bash #2");
+                Bash(_enemyBashed);
+            }
         }
-        Jump();
+    }
 
+    void GrabEnemy(GameObject enemy)
+    {
+        state = State.BASHING;
+        transform.position = enemy.transform.Find("GrabPosition").transform.position;
+        transform.SetParent(enemy.transform);
+        rg.velocity = Vector2.zero;
+        rg.isKinematic = true;
+        _enemyGrab = true;
+    }
+    
+    void Bash(GameObject enemy)
+    {
+        state = State.NORMAL;
+        transform.SetParent(null);
+        rg.isKinematic = false;
+        transform.rotation = Quaternion.Euler(0, 0, 0);
+
+        Vector2 dir = (enemy.transform.position - transform.position).normalized;
+
+        enemy.GetComponent<Rigidbody2D>().AddForce(dir * 5f, ForceMode2D.Impulse);
+        rg.AddForce(-dir * 15f, ForceMode2D.Impulse);
+    }
+
+    #region NormalState
+    void AttackInputCheck()
+    {
         if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
         {
             Attack();
@@ -84,8 +167,6 @@ public class Player : MonoBehaviour
         {
             counter += Time.deltaTime;
         }
-
-        slider.value = actualHP;
     }
 
     void Walk()
@@ -188,12 +269,23 @@ public class Player : MonoBehaviour
     {
         actualHP -= dmg;
     }
+    #endregion
 
     private void OnCollisionEnter2D(Collision2D c)
     {
         if (c.gameObject.CompareTag("Enemy"))
         {
             TakeDamage(dmg: c.gameObject.GetComponent<Enemy>().damage);
+        }
+    }
+
+    private void OnTriggerEnter2D(Collider2D c)
+    {
+        if (c.gameObject.CompareTag("BashArea"))
+        {
+            print("Bash Area");
+            _isBashArea = true;
+            _enemyBashed = c.transform.parent.gameObject;
         }
     }
 }
