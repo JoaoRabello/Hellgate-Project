@@ -1,4 +1,5 @@
-﻿using UnityEngine;
+﻿using System.Collections;
+using UnityEngine;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -29,6 +30,7 @@ public class Player : MonoBehaviour
 
     [Range(1,1000)]
     public float moveSpeed;
+    [SerializeField] private float dashSpeed;
     float horizontalInput;
     bool lookingRight = true;
 
@@ -49,6 +51,8 @@ public class Player : MonoBehaviour
     private bool _canBash = true;
     private bool _enemyGrab = false;
     private GameObject _enemyBashed;
+
+    private bool _canDash = true;
 
     void Awake()
     {
@@ -82,8 +86,8 @@ public class Player : MonoBehaviour
                 Jump();
 
                 AttackInputCheck();
+                DashInputCheck();
                 BashInputCheck();
-
                 break;
 
             case State.BASHING:
@@ -100,7 +104,9 @@ public class Player : MonoBehaviour
                         _enemyBashed.transform.Rotate(0f, 0f, 1f);
                     }
                 }
-
+                break;
+            case State.DASHING:
+                Dash();
                 break;
             default:
                 break;
@@ -109,18 +115,52 @@ public class Player : MonoBehaviour
         slider.value = actualHP;
     }
 
+    void DashInputCheck()
+    {
+        if (Input.GetKeyDown(KeyCode.Mouse1) && _canDash)
+        {
+            state = State.DASHING;
+            StartCoroutine(DashTime());
+        }
+    }
+
+    void Dash()
+    {
+        if(horizontalInput > 0)
+        {
+            rg.velocity = new Vector2((dashSpeed * 100) * Time.deltaTime, 0);
+        }
+        else
+        {
+            if(horizontalInput < 0)
+            {
+                rg.velocity = new Vector2(-(dashSpeed * 100) * Time.deltaTime, 0);
+            }
+        }
+    }
+
+    IEnumerator DashTime()
+    {
+        _canDash = false;
+        GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 0.25f);
+        yield return new WaitForSeconds(0.3f);
+        state = State.NORMAL;
+        rg.velocity = Vector2.zero;
+        GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
+        _canDash = true;
+    }
+
+    #region Bash Behaviour
     void BashInputCheck()
     {
         if (Input.GetKeyDown(KeyCode.E) && _canBash && _isBashArea && !_enemyGrab)
         {
-            print("Bash #1");
             GrabEnemy(_enemyBashed);
         }
         else
         {
             if(Input.GetKeyDown(KeyCode.E) && _canBash && _isBashArea && _enemyGrab)
             {
-                print("Bash #2");
                 Bash(_enemyBashed);
             }
         }
@@ -148,8 +188,9 @@ public class Player : MonoBehaviour
         enemy.GetComponent<Rigidbody2D>().AddForce(dir * 5f, ForceMode2D.Impulse);
         rg.AddForce(-dir * 15f, ForceMode2D.Impulse);
     }
+    #endregion
 
-    #region NormalState
+    #region Normal Behaviour
     void AttackInputCheck()
     {
         if (Input.GetKeyDown(KeyCode.Mouse0) && canAttack)
@@ -283,9 +324,17 @@ public class Player : MonoBehaviour
     {
         if (c.gameObject.CompareTag("BashArea"))
         {
-            print("Bash Area");
             _isBashArea = true;
             _enemyBashed = c.transform.parent.gameObject;
+        }
+    }
+
+    private void OnTriggerExit2D(Collider2D c)
+    {
+        if (c.gameObject.CompareTag("BashArea"))
+        {
+            _isBashArea = false;
+            _enemyBashed = null;
         }
     }
 }
