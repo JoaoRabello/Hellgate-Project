@@ -7,16 +7,22 @@ public class Player : MonoBehaviour
     private enum State { NORMAL, BASHING, DASHING };
     private State state;
 
+    private enum Appearance { ASMODEUS, SLAVE, DOMINATRIX };
+    private Appearance appearance = Appearance.ASMODEUS;
+
     private Rigidbody2D rg;
     private Animator an;
     private SpriteRenderer sp;
     
-    public Slider slider;
+    public Slider lifeSlider;
+    public Slider tankSlider;
     public LayerMask jumpMask;
 
     [Range(1,1000)]
-    public float totalHP = 100;
+    public float totalHP = 100f;
     private float actualHP;
+    public float totalTankHP = 50f;
+    private float actualTankHP;
     public Transform attackAreaR;
     public Transform attackAreaL;
     private float counter = 0f;
@@ -64,6 +70,7 @@ public class Player : MonoBehaviour
         boxSize = new Vector2(bodySize.x, groundedSkin);
 
         actualHP = totalHP;
+        actualTankHP = totalTankHP;
     }
 
     void Update()
@@ -111,10 +118,27 @@ public class Player : MonoBehaviour
             default:
                 break;
         }
-        
-        slider.value = actualHP;
+
+        switch (appearance)
+        {
+            case Appearance.ASMODEUS:
+
+                break;
+            case Appearance.SLAVE:
+
+                break;
+            case Appearance.DOMINATRIX:
+
+                break;
+            default:
+                break;
+        }
+
+        lifeSlider.value = actualHP;
+        tankSlider.value = actualTankHP;
     }
 
+    #region Dash Behaviour
     void DashInputCheck()
     {
         if (Input.GetKeyDown(KeyCode.Mouse1) && _canDash)
@@ -149,6 +173,7 @@ public class Player : MonoBehaviour
         GetComponent<SpriteRenderer>().color = new Color(1, 1, 1, 1f);
         _canDash = true;
     }
+    #endregion
 
     #region Bash Behaviour
     void BashInputCheck()
@@ -272,7 +297,9 @@ public class Player : MonoBehaviour
             }
         }
     }
+    #endregion
 
+    #region Combat Behaviour
     void Attack()
     {
         float damage = (strength + weaponStrength + atk + Random.Range(20f, 40f)) / 2;
@@ -308,8 +335,52 @@ public class Player : MonoBehaviour
 
     void TakeDamage(float dmg)
     {
-        actualHP -= dmg;
+        switch (appearance)
+        {
+            case Appearance.ASMODEUS:
+
+                if(actualHP > 0 && actualHP > dmg)
+                {
+                    print("Toma dano");
+                    actualHP -= dmg;
+                }
+                else
+                {
+                    if((actualHP <= 0 || actualHP <= dmg) && actualTankHP > 0)
+                    {
+                        print("Ressuscita");
+                        Ressurrect();
+                    }
+                    else
+                    {
+                        print("Morre");
+                        //Die();
+                    }
+                }
+
+                break;
+            case Appearance.SLAVE:
+
+                break;
+            case Appearance.DOMINATRIX:
+
+                break;
+            default:
+                break;
+        }
     }
+
+    void Ressurrect()
+    {
+        actualHP = 0f;
+        lifeSlider.value = actualHP;
+
+        actualHP += actualTankHP;
+
+        actualTankHP = 0;
+        tankSlider.value = 0f;
+    }
+
     #endregion
 
     private void OnCollisionEnter2D(Collision2D c)
