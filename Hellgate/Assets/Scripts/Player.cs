@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UI;
 
 public class Player : MonoBehaviour
@@ -7,15 +8,16 @@ public class Player : MonoBehaviour
     private enum State { NORMAL, BASHING, DASHING };
     private State state;
 
-    private enum Appearance { ASMODEUS, SLAVE, DOMINATRIX };
-    private Appearance appearance = Appearance.ASMODEUS;
+    public enum Appearance { ASMODEUS, SLAVE, DOMINATRIX };
+    public static Appearance appearance = Appearance.ASMODEUS;
 
     private Rigidbody2D rg;
     private Animator an;
-    private SpriteRenderer sp;
+    private SpriteRenderer spriteRenderer;
     
     public Slider lifeSlider;
     public Slider tankSlider;
+    public Slider shieldSlider;
     public LayerMask jumpMask;
 
     [Range(1,1000)]
@@ -23,11 +25,15 @@ public class Player : MonoBehaviour
     private float actualHP;
     public float totalTankHP = 50f;
     private float actualTankHP;
+    public float totalShield = 50f;
+    private float actualShield;
     public Transform attackAreaR;
     public Transform attackAreaL;
     private float counter = 0f;
     private float timeToAttack = 0.75f;
     private bool canAttack = true;
+    private bool canBeDamaged = true;
+    private bool shieldUp = false;
 
     private float strength = 100f;
     private float weaponStrength = 10f;
@@ -64,13 +70,14 @@ public class Player : MonoBehaviour
     {
         rg = GetComponent<Rigidbody2D>();
         an = GetComponent<Animator>();
-        sp = GetComponent<SpriteRenderer>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
 
         bodySize = GetComponent<CapsuleCollider2D>().size;
         boxSize = new Vector2(bodySize.x, groundedSkin);
 
         actualHP = totalHP;
         actualTankHP = totalTankHP;
+        actualShield = totalShield;
     }
 
     void Update()
@@ -129,13 +136,43 @@ public class Player : MonoBehaviour
                 break;
             case Appearance.DOMINATRIX:
 
+                if (Input.GetKeyDown(KeyCode.E))
+                {
+                    ShieldAbility();
+                }
+
                 break;
             default:
                 break;
         }
 
+        if (Input.GetKeyDown(KeyCode.Alpha1))
+        {
+            appearance = Appearance.ASMODEUS;
+            spriteRenderer.color = Color.white;
+        }
+        else
+        {
+            if (Input.GetKeyDown(KeyCode.Alpha2))
+            {
+                appearance = Appearance.SLAVE;
+                spriteRenderer.color = Color.blue;
+            }
+            else
+            {
+                if (Input.GetKeyDown(KeyCode.Alpha3))
+                {
+                    appearance = Appearance.DOMINATRIX;
+                    spriteRenderer.color = Color.magenta;
+                }
+            }
+        }
+
         lifeSlider.value = actualHP;
         tankSlider.value = actualTankHP;
+
+        if (shieldSlider.IsActive())
+            shieldSlider.value = actualShield;
     }
 
     #region Dash Behaviour
@@ -244,12 +281,12 @@ public class Player : MonoBehaviour
         //Visuals
         if (horizontalInput < 0)
         {
-            sp.flipX = true;
+            spriteRenderer.flipX = true;
             lookingRight = false;
         }
         else
         {
-            sp.flipX = false;
+            spriteRenderer.flipX = false;
             lookingRight = true;
         }
     }
@@ -304,7 +341,6 @@ public class Player : MonoBehaviour
     {
         float damage = (strength + weaponStrength + atk + Random.Range(20f, 40f)) / 2;
         bloodlustDamage = damage * (((((actualHP / totalHP) * 100) - 100) * (-1) / (200)) + 1);
-        print(bloodlustDamage);
         an.SetBool("attacking", true);
     }
 
@@ -335,38 +371,75 @@ public class Player : MonoBehaviour
 
     void TakeDamage(float dmg)
     {
-        switch (appearance)
+        if (canBeDamaged)
         {
-            case Appearance.ASMODEUS:
+            switch (appearance)
+            {
+                case Appearance.ASMODEUS:
 
-                if(actualHP > 0 && actualHP > dmg)
-                {
-                    print("Toma dano");
-                    actualHP -= dmg;
-                }
-                else
-                {
-                    if((actualHP <= 0 || actualHP <= dmg) && actualTankHP > 0)
+                    if (actualHP > 0 && actualHP > dmg)
                     {
-                        print("Ressuscita");
-                        Ressurrect();
+                        actualHP -= dmg;
+                        StartCoroutine(DamageCooldown());
                     }
                     else
                     {
-                        print("Morre");
-                        //Die();
+                        if ((actualHP <= 0 || actualHP <= dmg) && actualTankHP > 0)
+                        {
+                            Ressurrect();
+                        }
+                        else
+                        {
+                            print("Morre");
+                        }
                     }
-                }
 
-                break;
-            case Appearance.SLAVE:
+                    break;
+                case Appearance.SLAVE:
 
-                break;
-            case Appearance.DOMINATRIX:
+                    if (actualTankHP > 0 && actualTankHP > dmg)
+                    {
+                        actualTankHP -= dmg;
+                        StartCoroutine(DamageCooldown());
+                    }
+                    else
+                    {
+                        if (actualTankHP <= 0)
+                        {
+                            if (actualHP > 0 && actualHP > dmg)
+                            {
+                                actualHP -= dmg;
+                                StartCoroutine(DamageCooldown());
+                            }
+                            else
+                            {
+                                print("Morre");
+                            }
+                        }
+                        else
+                        {
+                            dmg -= actualTankHP;
+                            actualTankHP = 0;
+                            TakeDamage(dmg);
+                        }
+                    }
 
-                break;
-            default:
-                break;
+                    break;
+                case Appearance.DOMINATRIX:
+
+                    if (shieldUp)
+                    {
+                        if(actualShield > 0 && actualShield > dmg)
+                        {
+                            actualShield -= dmg;
+                            StartCoroutine(DamageCooldown());
+                        }
+                    }
+
+                    break;
+                default:
+                    break;
+            }
         }
     }
 
@@ -379,6 +452,35 @@ public class Player : MonoBehaviour
 
         actualTankHP = 0;
         tankSlider.value = 0f;
+    }
+
+    private IEnumerator DamageCooldown()
+    {
+        canBeDamaged = false;
+        Color oldColor = spriteRenderer.color;
+        spriteRenderer.color = new Color(0.5f, 0, 0);
+        yield return new WaitForSeconds(1f);
+        canBeDamaged = true;
+        spriteRenderer.color = oldColor;
+    }
+
+    #endregion
+
+    #region Abilities Behaviour
+
+    void ShieldAbility()
+    {
+        StartCoroutine(ShieldUpTimer());
+    }
+
+    private IEnumerator ShieldUpTimer()
+    {
+        shieldUp = true;
+        shieldSlider.gameObject.SetActive(true);
+        yield return new WaitForSeconds(5);
+        shieldSlider.gameObject.SetActive(false);
+        actualHP += actualShield;
+        shieldUp = false;
     }
 
     #endregion
@@ -397,6 +499,11 @@ public class Player : MonoBehaviour
         {
             _isBashArea = true;
             _enemyBashed = c.transform.parent.gameObject;
+        }
+
+        if (c.gameObject.CompareTag("Finish"))
+        {
+            SceneManager.LoadScene(2);
         }
     }
 
