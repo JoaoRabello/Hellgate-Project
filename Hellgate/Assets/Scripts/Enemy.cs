@@ -6,8 +6,9 @@ public class Enemy : MonoBehaviour
 {
     GameObject player;
     Rigidbody2D rg;
+    SpriteRenderer spriteRenderer;
 
-    [Range(1,10)]
+    [Range(1,1000)]
     public float HP = 100;
     [Range(1,1000)]
     public float speed;
@@ -28,6 +29,7 @@ public class Enemy : MonoBehaviour
     {
         player = FindObjectOfType<Player>().gameObject;
         rg = GetComponent<Rigidbody2D>();
+        spriteRenderer = GetComponent<SpriteRenderer>();
     }
 
     void Update()
@@ -93,23 +95,42 @@ public class Enemy : MonoBehaviour
 
     void GroundCheck()
     {
-        bool rayRight = Physics2D.Raycast((Vector2)transform.position + Vector2.right * 0.75f, Vector2.down, 2.5f, raycastMask);
-        bool rayLeft = Physics2D.Raycast((Vector2)transform.position + Vector2.left * 0.75f, Vector2.down, 2.5f, raycastMask);
+        bool dontFallRight = Physics2D.Raycast((Vector2)transform.position + Vector2.right * 0.75f, Vector2.down, 2.5f, raycastMask);
+        bool dontFallLeft = Physics2D.Raycast((Vector2)transform.position + Vector2.left * 0.75f, Vector2.down, 2.5f, raycastMask);
 
-        if (rayRight && rayLeft)
+        bool rayWallRight = Physics2D.Raycast((Vector2)transform.position + Vector2.right * 0.75f, Vector2.right, 1f, raycastMask);
+        bool rayWallLeft = Physics2D.Raycast((Vector2)transform.position + Vector2.left * 0.75f, Vector2.left, 1f, raycastMask);
+
+        if ((dontFallRight && dontFallLeft))
         {
-            canMoveL = true;
-            canMoveR = true;
+            if (rayWallRight)
+            {
+                canMoveR = false;
+                canMoveL = true;
+            }
+            else
+            {
+                if (rayWallLeft)
+                {
+                    canMoveR = true;
+                    canMoveL = false;
+                }
+                else
+                {
+                    canMoveL = true;
+                    canMoveR = true;
+                }
+            }
         }
         else
         {
-            if (!rayRight)
+            if (!dontFallRight)
             {
                 canMoveR = false;
             }
             else
             {
-                if (!rayLeft)
+                if (!dontFallLeft)
                 {
                     canMoveL = false;
                 }
@@ -127,14 +148,24 @@ public class Enemy : MonoBehaviour
         {
             HP -= dmg;
             rg.AddForce(new Vector2(transform.position.x - player.transform.position.x, 0f) * knockbackForce, ForceMode2D.Force);
-            StartCoroutine(Daze(0.5f));
+            StartCoroutine(Daze(0.75f));
         }
     }
 
     IEnumerator Daze(float time)
     {
         canMove = false;
-        yield return new WaitForSeconds(time);
+        Color defaultColor = spriteRenderer.color;
+        Color damagedColor = new Color(1,0,0,0.5f);
+
+        spriteRenderer.color = damagedColor;
+        yield return new WaitForSeconds(time/3);
+        spriteRenderer.color = defaultColor;
+        yield return new WaitForSeconds(time/3);
+        spriteRenderer.color = damagedColor;
+        yield return new WaitForSeconds(time/3);
+        spriteRenderer.color = defaultColor;
+
         canMove = true;
     }
 

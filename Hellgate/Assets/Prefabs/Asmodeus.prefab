@@ -197,8 +197,8 @@ CapsuleCollider2D:
   m_IsTrigger: 0
   m_UsedByEffector: 0
   m_UsedByComposite: 0
-  m_Offset: {x: 0.05235386, y: 0}
-  m_Size: {x: 0.56087494, y: 2.03125}
+  m_Offset: {x: 0.05235386, y: 0.015041113}
+  m_Size: {x: 0.56087494, y: 2.0011678}
   m_Direction: 0
 --- !u!114 &1455005707426322211
 MonoBehaviour:
@@ -212,14 +212,19 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c931e59018283fb4abbb425566cb6cff, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  slider: {fileID: 0}
+  lifeSlider: {fileID: 0}
+  tankSlider: {fileID: 0}
+  shieldSlider: {fileID: 0}
   jumpMask:
     serializedVersion: 2
     m_Bits: 256
-  life: 300
+  totalHP: 100
+  totalTankHP: 50
+  totalShield: 50
   attackAreaR: {fileID: 1455005707733656143}
   attackAreaL: {fileID: 1455005706702128812}
   moveSpeed: 3.5
+  dashSpeed: 0
   velocidadePulo: 12
   forcaPuloAlto: 2.5
   forcaPuloBaixo: 2

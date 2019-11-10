@@ -2,6 +2,7 @@
 using UnityEngine;
 using UnityEngine.SceneManagement;
 using UnityEngine.UI;
+using TMPro;
 
 public class Player : MonoBehaviour
 {
@@ -10,6 +11,9 @@ public class Player : MonoBehaviour
 
     public enum Appearance { ASMODEUS, SLAVE, DOMINATRIX };
     public static Appearance appearance = Appearance.ASMODEUS;
+
+    [SerializeField] private TextMeshProUGUI formText;
+
 
     private Rigidbody2D rg;
     private Animator an;
@@ -148,6 +152,7 @@ public class Player : MonoBehaviour
 
         if (Input.GetKeyDown(KeyCode.Alpha1))
         {
+            formText.text = "Normal";
             appearance = Appearance.ASMODEUS;
             spriteRenderer.color = Color.white;
         }
@@ -155,6 +160,7 @@ public class Player : MonoBehaviour
         {
             if (Input.GetKeyDown(KeyCode.Alpha2))
             {
+                formText.text = "Slave";
                 appearance = Appearance.SLAVE;
                 spriteRenderer.color = Color.blue;
             }
@@ -162,6 +168,7 @@ public class Player : MonoBehaviour
             {
                 if (Input.GetKeyDown(KeyCode.Alpha3))
                 {
+                    formText.text = "Dominatrix";
                     appearance = Appearance.DOMINATRIX;
                     spriteRenderer.color = Color.magenta;
                 }
@@ -390,7 +397,7 @@ public class Player : MonoBehaviour
                         }
                         else
                         {
-                            print("Morre");
+                            Die();
                         }
                     }
 
@@ -413,7 +420,7 @@ public class Player : MonoBehaviour
                             }
                             else
                             {
-                                print("Morre");
+                                Die();
                             }
                         }
                         else
@@ -433,6 +440,18 @@ public class Player : MonoBehaviour
                         {
                             actualShield -= dmg;
                             StartCoroutine(DamageCooldown());
+                        }
+                    }
+                    else
+                    {
+                        if (actualHP > 0 && actualHP > dmg)
+                        {
+                            actualHP -= dmg;
+                            StartCoroutine(DamageCooldown());
+                        }
+                        else
+                        {
+                            Die();
                         }
                     }
 
@@ -462,6 +481,11 @@ public class Player : MonoBehaviour
         yield return new WaitForSeconds(1f);
         canBeDamaged = true;
         spriteRenderer.color = oldColor;
+    }
+
+    void Die()
+    {
+        SceneManager.LoadScene(3);
     }
 
     #endregion
@@ -504,6 +528,13 @@ public class Player : MonoBehaviour
         if (c.gameObject.CompareTag("Finish"))
         {
             SceneManager.LoadScene(2);
+        }
+        else
+        {
+            if (c.gameObject.CompareTag("Abyss"))
+            {
+                Die();
+            }
         }
     }
 
